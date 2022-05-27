@@ -160,6 +160,23 @@ async def good(message: types.Message):
     await message.reply("Не грусти сильно. Выбери занятие, которое олицетворяет твой день:", reply_markup=keyboard)
     users[str(user_id)]["state"] = "INPUT_WHATDO"
 
+@dp.message_handler(filters.Text(contains="Ужасно"))
+async def good(message: types.Message):
+    user_id = message.from_user.id
+    user = users.get(str(user_id))
+    if user == None:
+        state = "FINISH"
+    else:
+        state = user['state']
+    if state != "INPUT_DAY_SPENT":
+        await message.reply("Неверный ввод")
+        return
+    diary[str(user_id)][user["date"]]["Провел день - "] = message.text
+    keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
+    keyboard.add(*step)
+    await message.reply("Давай исправим твое состояние. Выбери занятие, которое олицетворяет твой день:", reply_markup=keyboard)
+    users[str(user_id)]["state"] = "INPUT_WHATDO"
+
 
 @dp.message_handler(filters.Text(equals=step))
 async def learn(message: types.Message):
