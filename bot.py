@@ -16,14 +16,16 @@ diary = {} # переменная для зранения дневников
 # {'1012736210': {
 # 	{'24.04.2022': {
 # 		'Провел день - ': 'Отлично!', 
-# 		'Чем занимался - ': 'Занимался спортом', 
+# 		'Чем занимался - ': 'Занимался спортом',
+#       'Сон - ': 'Бессонница',
 # 		'Описание дня - ': 'Пробежал 1000 км'}
 # 	}
 # }}
 
 
 mood = ["Супер", "Хорошо", "Так себе", "Плохо", "Ужасно"]
-step = ["Учился", "Занимался спортом", "Работал"]
+step = ["Учился", "Занимался спортом", "Работал", "Мучал людей", "Отдыхал"]
+sleep = ["Хороший сон"]
 look = ["Посмотреть дневник",]
 
 
@@ -160,6 +162,7 @@ async def good(message: types.Message):
     await message.reply("Не грусти сильно. Выбери занятие, которое олицетворяет твой день:", reply_markup=keyboard)
     users[str(user_id)]["state"] = "INPUT_WHATDO"
 
+
 @dp.message_handler(filters.Text(contains="Ужасно"))
 async def good(message: types.Message):
     user_id = message.from_user.id
@@ -190,8 +193,26 @@ async def learn(message: types.Message):
         await message.reply("Неверный ввод")
         return
     diary[str(user_id)][user["date"]]["Чем занимался - "] = message.text
-    await message.reply("Расскажи о своем дне)", reply_markup=types.ReplyKeyboardRemove())
+    await message.reply("Как тебе спалось?", reply_markup=types.ReplyKeyboardRemove())
     users[str(user_id)]["state"] = "INPUT_DAY_DESCR"
+
+
+@dp.message_handler(filters.Text(contains="Хороший сон"))
+async def good(message: types.Message):
+    user_id = message.from_user.id
+    user = users.get(str(user_id))
+    if user == None:
+        state = "FINISH"
+    else:
+        state = user['state']
+    if state != "INPUT_DAY_SPENT":
+        await message.reply("Неверный ввод")
+        return
+    diary[str(user_id)][user["date"]]["Сон - "] = message.text
+    keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
+    keyboard.add(*sleep)
+    await message.reply("Отлично! Какая сегодня была погодка?", reply_markup=keyboard)
+    users[str(user_id)]["state"] = "INPUT_SLEEP"
 
 
 @dp.message_handler(filters.Text(contains="весь"))
