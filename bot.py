@@ -233,6 +233,24 @@ async def good(message: types.Message):
     users[str(user_id)]["state"] = "INPUT_SLEEP"
 
 
+@dp.message_handler(filters.Text(contains="Бессоница"))
+async def good(message: types.Message):
+    user_id = message.from_user.id
+    user = users.get(str(user_id))
+    if user == None:
+        state = "FINISH"
+    else:
+        state = user['state']
+    if state != "INPUT_DAY_SLEEP":
+        await message.reply("Неверный ввод")
+        return
+    diary[str(user_id)][user["date"]]["Сон - "] = message.text
+    keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
+    keyboard.add(*sleep)
+    await message.reply("Тебе очень даже повезло! Какая сегодня была погодка?", reply_markup=keyboard)
+    users[str(user_id)]["state"] = "INPUT_SLEEP"
+
+
 @dp.message_handler(filters.Text(contains="весь"))
 async def print_diary(message: types.Message):
     user_id = message.from_user.id
