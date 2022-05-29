@@ -25,7 +25,7 @@ diary = {} # переменная для зранения дневников
 
 mood = ["Супер", "Хорошо", "Так себе", "Плохо", "Ужасно"]
 step = ["Учился", "Занимался спортом", "Работал", "Мучал людей", "Отдыхал"]
-sleep = ["Хороший сон"]
+sleep = ["Хороший сон", "Нормальный сон", "Бессонница", "Кошмары", "Не помню"]
 look = ["Посмотреть дневник",]
 
 
@@ -205,13 +205,31 @@ async def good(message: types.Message):
         state = "FINISH"
     else:
         state = user['state']
-    if state != "INPUT_DAY_SPENT":
+    if state != "INPUT_SLEEP":
         await message.reply("Неверный ввод")
         return
     diary[str(user_id)][user["date"]]["Сон - "] = message.text
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
     keyboard.add(*sleep)
     await message.reply("Отлично! Какая сегодня была погодка?", reply_markup=keyboard)
+    users[str(user_id)]["state"] = "INPUT_SLEEP"
+
+
+@dp.message_handler(filters.Text(contains="Нормальный сон"))
+async def good(message: types.Message):
+    user_id = message.from_user.id
+    user = users.get(str(user_id))
+    if user == None:
+        state = "FINISH"
+    else:
+        state = user['state']
+    if state != "INPUT_DAY_SLEEP":
+        await message.reply("Неверный ввод")
+        return
+    diary[str(user_id)][user["date"]]["Сон - "] = message.text
+    keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
+    keyboard.add(*sleep)
+    await message.reply("Тебе очень даже повезло! Какая сегодня была погодка?", reply_markup=keyboard)
     users[str(user_id)]["state"] = "INPUT_SLEEP"
 
 
