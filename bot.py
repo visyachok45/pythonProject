@@ -92,7 +92,7 @@ async def input_date(message: types.Message):
 
 
 @dp.message_handler(filters.Text(contains="Супер"))
-async def fine(message: types.Message):
+async def perfect(message: types.Message):
     user_id = message.from_user.id
     user = users.get(str(user_id))
     if user == None:
@@ -128,7 +128,7 @@ async def good(message: types.Message):
 
 
 @dp.message_handler(filters.Text(contains="Так себе"))
-async def bad(message: types.Message):
+async def normal(message: types.Message):
     user_id = message.from_user.id
     user = users.get(str(user_id))
     if user == None:
@@ -146,7 +146,7 @@ async def bad(message: types.Message):
 
 
 @dp.message_handler(filters.Text(contains="Плохо"))
-async def good(message: types.Message):
+async def bad(message: types.Message):
     user_id = message.from_user.id
     user = users.get(str(user_id))
     if user == None:
@@ -164,7 +164,7 @@ async def good(message: types.Message):
 
 
 @dp.message_handler(filters.Text(contains="Ужасно"))
-async def good(message: types.Message):
+async def terrible(message: types.Message):
     user_id = message.from_user.id
     user = users.get(str(user_id))
     if user == None:
@@ -194,11 +194,11 @@ async def learn(message: types.Message):
         return
     diary[str(user_id)][user["date"]]["Чем занимался - "] = message.text
     await message.reply("Как тебе спалось?", reply_markup=types.ReplyKeyboardRemove())
-    users[str(user_id)]["state"] = "INPUT_DAY_DESCR"
+    users[str(user_id)]["state"] = "INPUT_SLEEP"
 
 
 @dp.message_handler(filters.Text(contains="Хороший сон"))
-async def good(message: types.Message):
+async def good_sleep(message: types.Message):
     user_id = message.from_user.id
     user = users.get(str(user_id))
     if user == None:
@@ -212,11 +212,11 @@ async def good(message: types.Message):
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
     keyboard.add(*sleep)
     await message.reply("Отлично! Как ты сегодня поспал?", reply_markup=keyboard)
-    users[str(user_id)]["state"] = "INPUT_SLEEP"
+    users[str(user_id)]["state"] = "INPUT_DAY_DESCR"
 
 
 @dp.message_handler(filters.Text(contains="Нормальный сон"))
-async def good(message: types.Message):
+async def narmal_sleep(message: types.Message):
     user_id = message.from_user.id
     user = users.get(str(user_id))
     if user == None:
@@ -230,11 +230,11 @@ async def good(message: types.Message):
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
     keyboard.add(*sleep)
     await message.reply("Тебе очень даже повезло! Какая сегодня была погодка?", reply_markup=keyboard)
-    users[str(user_id)]["state"] = "INPUT_SLEEP"
+    users[str(user_id)]["state"] = "INPUT_DAY_DESCR"
 
 
 @dp.message_handler(filters.Text(contains="Бессоница"))
-async def good(message: types.Message):
+async def insomnia(message: types.Message):
     user_id = message.from_user.id
     user = users.get(str(user_id))
     if user == None:
@@ -248,11 +248,11 @@ async def good(message: types.Message):
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
     keyboard.add(*sleep)
     await message.reply("Тебе очень даже повезло! Какая сегодня была погодка?", reply_markup=keyboard)
-    users[str(user_id)]["state"] = "INPUT_SLEEP"
+    users[str(user_id)]["state"] = "INPUT_DAY_DESCR"
 
 
 @dp.message_handler(filters.Text(contains="Кошмары"))
-async def good(message: types.Message):
+async def nightmare(message: types.Message):
     user_id = message.from_user.id
     user = users.get(str(user_id))
     if user == None:
@@ -266,11 +266,11 @@ async def good(message: types.Message):
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
     keyboard.add(*sleep)
     await message.reply("Тебе очень даже повезло! Какая сегодня была погодка?", reply_markup=keyboard)
-    users[str(user_id)]["state"] = "INPUT_SLEEP"
+    users[str(user_id)]["state"] = "INPUT_DAY_DESCR"
 
 
 @dp.message_handler(filters.Text(contains="Не помню"))
-async def good(message: types.Message):
+async def dont_know(message: types.Message):
     user_id = message.from_user.id
     user = users.get(str(user_id))
     if user == None:
@@ -284,7 +284,7 @@ async def good(message: types.Message):
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
     keyboard.add(*sleep)
     await message.reply("Тебе очень даже повезло! Какая сегодня была погодка?", reply_markup=keyboard)
-    users[str(user_id)]["state"] = "INPUT_SLEEP"
+    users[str(user_id)]["state"] = "INPUT_DAY_DESCR"
 
 
 @dp.message_handler(filters.Text(contains="весь"))
