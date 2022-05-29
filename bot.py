@@ -211,7 +211,7 @@ async def good(message: types.Message):
     diary[str(user_id)][user["date"]]["Сон - "] = message.text
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
     keyboard.add(*sleep)
-    await message.reply("Отлично! Какая сегодня была погодка?", reply_markup=keyboard)
+    await message.reply("Отлично! Как ты сегодня поспал?", reply_markup=keyboard)
     users[str(user_id)]["state"] = "INPUT_SLEEP"
 
 
@@ -223,7 +223,7 @@ async def good(message: types.Message):
         state = "FINISH"
     else:
         state = user['state']
-    if state != "INPUT_DAY_SLEEP":
+    if state != "INPUT_SLEEP":
         await message.reply("Неверный ввод")
         return
     diary[str(user_id)][user["date"]]["Сон - "] = message.text
@@ -241,7 +241,7 @@ async def good(message: types.Message):
         state = "FINISH"
     else:
         state = user['state']
-    if state != "INPUT_DAY_SLEEP":
+    if state != "INPUT_SLEEP":
         await message.reply("Неверный ввод")
         return
     diary[str(user_id)][user["date"]]["Сон - "] = message.text
@@ -259,7 +259,25 @@ async def good(message: types.Message):
         state = "FINISH"
     else:
         state = user['state']
-    if state != "INPUT_DAY_SLEEP":
+    if state != "INPUT_SLEEP":
+        await message.reply("Неверный ввод")
+        return
+    diary[str(user_id)][user["date"]]["Сон - "] = message.text
+    keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
+    keyboard.add(*sleep)
+    await message.reply("Тебе очень даже повезло! Какая сегодня была погодка?", reply_markup=keyboard)
+    users[str(user_id)]["state"] = "INPUT_SLEEP"
+
+
+@dp.message_handler(filters.Text(contains="Не помню"))
+async def good(message: types.Message):
+    user_id = message.from_user.id
+    user = users.get(str(user_id))
+    if user == None:
+        state = "FINISH"
+    else:
+        state = user['state']
+    if state != "INPUT_SLEEP":
         await message.reply("Неверный ввод")
         return
     diary[str(user_id)][user["date"]]["Сон - "] = message.text
