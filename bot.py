@@ -217,7 +217,7 @@ async def good_sleep(message: types.Message):
 
 
 @dp.message_handler(filters.Text(contains="Нормальный сон"))
-async def narmal_sleep(message: types.Message):
+async def normal_sleep(message: types.Message):
     user_id = message.from_user.id
     user = users.get(str(user_id))
     if user == None:
@@ -357,6 +357,24 @@ async def windy(message: types.Message):
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
     keyboard.add(*sleep)
     await message.reply("Бррр! Небось холодновато. Какая прошел твой день?", reply_markup=keyboard)
+    users[str(user_id)]["state"] = "INPUT_DAY_DESCR"
+
+
+@dp.message_handler(filters.Text(contains="Нормальная погода"))
+async def normal_weather(message: types.Message):
+    user_id = message.from_user.id
+    user = users.get(str(user_id))
+    if user == None:
+        state = "FINISH"
+    else:
+        state = user['state']
+    if state != "INPUT_WEATHER":
+        await message.reply("Неверный ввод")
+        return
+    diary[str(user_id)][user["date"]]["Погода - "] = message.text
+    keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
+    keyboard.add(*sleep)
+    await message.reply("Это хорошо. Какая прошел твой день?", reply_markup=keyboard)
     users[str(user_id)]["state"] = "INPUT_DAY_DESCR"
 
 
