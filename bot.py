@@ -427,7 +427,7 @@ async def windy(message: types.Message):
     users[str(user_id)]["state"] = "INPUT_DAY_DESCR"
 
 
-@dp.message_handler(filters.Text(contains="Нормальная погода"))
+@dp.message_handler(filters.Text(contains="Нормальная"))
 async def normal_weather(message: types.Message):
     user_id = message.from_user.id
     user = users.get(str(user_id))
