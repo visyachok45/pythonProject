@@ -217,6 +217,24 @@ async def sport(message: types.Message):
     keyboard.add(*sleep)
     await message.reply("Укреплять организм очень важно. Как тебе спалось?", reply_markup=keyboard)
     users[str(user_id)]["state"] = "INPUT_SLEEP"
+
+
+@dp.message_handler(filters.Text(contains="Работал"))
+async def work(message: types.Message):
+    user_id = message.from_user.id
+    user = users.get(str(user_id))
+    if user == None:
+        state = "FINISH"
+    else:
+        state = user['state']
+    if state != "INPUT_WHATDO":
+        await message.reply("Неверный ввод")
+        return
+    diary[str(user_id)][user["date"]]["Чем занимался - "] = message.text
+    keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
+    keyboard.add(*sleep)
+    await message.reply("Денюшки я люблю. Как тебе спалось?", reply_markup=keyboard)
+    users[str(user_id)]["state"] = "INPUT_SLEEP"
 #\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 @dp.message_handler(filters.Text(contains="Хороший сон"))
 async def good_sleep(message: types.Message):
