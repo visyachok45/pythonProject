@@ -26,6 +26,7 @@ diary = {} # переменная для зранения дневников
 mood = ["Супер", "Хорошо", "Так себе", "Плохо", "Ужасно"]
 step = ["Учился", "Занимался спортом", "Работал", "Мучал людей", "Отдыхал"]
 sleep = ["Хороший сон", "Нормальный сон", "Бессонница", "Кошмары", "Не помню"]
+weather = ["Солнечная", "Дождливая", "Снежная", "Ветренняя", "Нормальная"]
 look = ["Посмотреть дневник",]
 
 
@@ -284,6 +285,24 @@ async def dont_know(message: types.Message):
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
     keyboard.add(*sleep)
     await message.reply("Тебе очень даже повезло! Какая сегодня была погодка?", reply_markup=keyboard)
+    users[str(user_id)]["state"] = "INPUT_WEATHER"
+
+
+@dp.message_handler(filters.Text(contains="Солнечная"))
+async def sunny(message: types.Message):
+    user_id = message.from_user.id
+    user = users.get(str(user_id))
+    if user == None:
+        state = "FINISH"
+    else:
+        state = user['state']
+    if state != "INPUT_WEATHER":
+        await message.reply("Неверный ввод")
+        return
+    diary[str(user_id)][user["date"]]["Погода - "] = message.text
+    keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
+    keyboard.add(*sleep)
+    await message.reply("Круто! Какая прошел твой день?", reply_markup=keyboard)
     users[str(user_id)]["state"] = "INPUT_DAY_DESCR"
 
 
