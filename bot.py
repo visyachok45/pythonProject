@@ -195,10 +195,12 @@ async def learn(message: types.Message):
         await message.reply("Неверный ввод")
         return
     diary[str(user_id)][user["date"]]["Чем занимался - "] = message.text
-    await message.reply("Как тебе спалось?", reply_markup=types.ReplyKeyboardRemove())
+    keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
+    keyboard.add(*sleep)
+    await message.reply("Как тебе спалось?", reply_markup=keyboard)
     users[str(user_id)]["state"] = "INPUT_SLEEP"
 
-
+#\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 @dp.message_handler(filters.Text(contains="Хороший сон"))
 async def good_sleep(message: types.Message):
     user_id = message.from_user.id
@@ -212,7 +214,7 @@ async def good_sleep(message: types.Message):
         return
     diary[str(user_id)][user["date"]]["Сон - "] = message.text
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    keyboard.add(*sleep)
+    keyboard.add(*weather)
     await message.reply("Отлично! Как ты сегодня поспал?", reply_markup=keyboard)
     users[str(user_id)]["state"] = "INPUT_WEATHER"
 
@@ -230,7 +232,7 @@ async def normal_sleep(message: types.Message):
         return
     diary[str(user_id)][user["date"]]["Сон - "] = message.text
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    keyboard.add(*sleep)
+    keyboard.add(*weather)
     await message.reply("Тебе очень даже повезло! Какая сегодня была погодка?", reply_markup=keyboard)
     users[str(user_id)]["state"] = "INPUT_WEATHER"
 
@@ -248,7 +250,7 @@ async def insomnia(message: types.Message):
         return
     diary[str(user_id)][user["date"]]["Сон - "] = message.text
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    keyboard.add(*sleep)
+    keyboard.add(*weather)
     await message.reply("Грустно. Какая сегодня была погодка?", reply_markup=keyboard)
     users[str(user_id)]["state"] = "INPUT_WEATHER"
 
@@ -266,7 +268,7 @@ async def nightmare(message: types.Message):
         return
     diary[str(user_id)][user["date"]]["Сон - "] = message.text
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    keyboard.add(*sleep)
+    keyboard.add(*weather)
     await message.reply("Какой ужас! Какая сегодня была погодка?", reply_markup=keyboard)
     users[str(user_id)]["state"] = "INPUT_WEATHER"
 
@@ -284,7 +286,7 @@ async def dont_know(message: types.Message):
         return
     diary[str(user_id)][user["date"]]["Сон - "] = message.text
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    keyboard.add(*sleep)
+    keyboard.add(*weather)
     await message.reply("Не расстраивайся! Какая сегодня была погодка?", reply_markup=keyboard)
     users[str(user_id)]["state"] = "INPUT_WEATHER"
 
@@ -301,9 +303,7 @@ async def sunny(message: types.Message):
         await message.reply("Неверный ввод")
         return
     diary[str(user_id)][user["date"]]["Погода - "] = message.text
-    keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    keyboard.add(*weather)
-    await message.reply("Круто! Какая прошел твой день?", reply_markup=keyboard)
+    await message.reply("Круто! Какая прошел твой день?", reply_markup=types.ReplyKeyboardRemove())
     users[str(user_id)]["state"] = "INPUT_DAY_DESCR"
 
 
@@ -319,9 +319,7 @@ async def rainy(message: types.Message):
         await message.reply("Неверный ввод")
         return
     diary[str(user_id)][user["date"]]["Погода - "] = message.text
-    keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    keyboard.add(*weather)
-    await message.reply("Не знаю как тебе, а я обожаю дождь! Какая прошел твой день?", reply_markup=keyboard)
+    await message.reply("Не знаю как тебе, а я обожаю дождь! Какая прошел твой день?", reply_markup=types.ReplyKeyboardRemove())
     users[str(user_id)]["state"] = "INPUT_DAY_DESCR"
 
 
@@ -337,9 +335,7 @@ async def snow(message: types.Message):
         await message.reply("Неверный ввод")
         return
     diary[str(user_id)][user["date"]]["Погода - "] = message.text
-    keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    keyboard.add(*weather)
-    await message.reply("Прям как в сказке на улице! Какая прошел твой день?", reply_markup=keyboard)
+    await message.reply("Прям как в сказке на улице! Какая прошел твой день?", reply_markup=types.ReplyKeyboardRemove())
     users[str(user_id)]["state"] = "INPUT_DAY_DESCR"
 
 
@@ -355,9 +351,7 @@ async def windy(message: types.Message):
         await message.reply("Неверный ввод")
         return
     diary[str(user_id)][user["date"]]["Погода - "] = message.text
-    keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    keyboard.add(*weather)
-    await message.reply("Бррр! Небось холодновато. Какая прошел твой день?", reply_markup=keyboard)
+    await message.reply("Бррр! Небось холодновато. Какая прошел твой день?", reply_markup=types.ReplyKeyboardRemove())
     users[str(user_id)]["state"] = "INPUT_DAY_DESCR"
 
 
@@ -373,9 +367,7 @@ async def normal_weather(message: types.Message):
         await message.reply("Неверный ввод")
         return
     diary[str(user_id)][user["date"]]["Погода - "] = message.text
-    keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    keyboard.add(*weather)
-    await message.reply("Это хорошо. Какая прошел твой день?", reply_markup=keyboard)
+    await message.reply("Это хорошо. Какая прошел твой день?", reply_markup=types.ReplyKeyboardRemove())
     users[str(user_id)]["state"] = "INPUT_DAY_DESCR"
 
 
@@ -410,7 +402,6 @@ async def look_diary(message: types.Message):
         await message.reply("Неверный ввод")
         return
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
-
     keyboard.add("весь")
     await message.reply("Введи дату заметки в виде дд.мм.гггг)", reply_markup=keyboard)
     users[str(user_id)]["state"] = "INPUT_DIARY_DATE"
