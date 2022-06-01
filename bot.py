@@ -287,7 +287,7 @@ async def good_sleep(message: types.Message):
     diary[str(user_id)][user["date"]]["Сон - "] = message.text
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
     keyboard.add(*weather)
-    await message.reply("Отлично! Как ты сегодня поспал?", reply_markup=keyboard)
+    await message.reply("Отлично! Какая сегодня погода?", reply_markup=keyboard)
     users[str(user_id)]["state"] = "INPUT_WEATHER"
 
 
