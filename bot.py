@@ -254,6 +254,24 @@ async def people(message: types.Message):
     await message.reply("Хехехе, а ты у нас шалун! Как тебе спалось?", reply_markup=keyboard)
     users[str(user_id)]["state"] = "INPUT_SLEEP"
 
+
+@dp.message_handler(filters.Text(contains="Отдыхал"))
+async def relax(message: types.Message):
+    user_id = message.from_user.id
+    user = users.get(str(user_id))
+    if user == None:
+        state = "FINISH"
+    else:
+        state = user['state']
+    if state != "INPUT_WHATDO":
+        await message.reply("Неверный ввод")
+        return
+    diary[str(user_id)][user["date"]]["Чем занимался - "] = message.text
+    keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
+    keyboard.add(*sleep)
+    await message.reply("Это просто превосходно. Как тебе спалось?", reply_markup=keyboard)
+    users[str(user_id)]["state"] = "INPUT_SLEEP"
+
 #\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 @dp.message_handler(filters.Text(contains="Хороший сон"))
 async def good_sleep(message: types.Message):
