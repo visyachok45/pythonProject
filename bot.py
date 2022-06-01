@@ -92,7 +92,7 @@ async def input_date(message: types.Message):
         await message.reply("Неверный ввод")
         return
 
-
+#///////////////////////////////////////////////////////////////////////////////////////////////////////
 @dp.message_handler(filters.Text(contains="Супер"))
 async def perfect(message: types.Message):
     user_id = message.from_user.id
@@ -182,8 +182,8 @@ async def terrible(message: types.Message):
     await message.reply("Давай исправим твое состояние. Выбери занятие, которое олицетворяет твой день:", reply_markup=keyboard)
     users[str(user_id)]["state"] = "INPUT_WHATDO"
 
-
-@dp.message_handler(filters.Text(equals=step))
+#/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+@dp.message_handler(filters.Text(contains="Учился"))
 async def learn(message: types.Message):
     user_id = message.from_user.id
     user = users.get(str(user_id))
@@ -197,9 +197,26 @@ async def learn(message: types.Message):
     diary[str(user_id)][user["date"]]["Чем занимался - "] = message.text
     keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
     keyboard.add(*sleep)
-    await message.reply("Как тебе спалось?", reply_markup=keyboard)
+    await message.reply("Знания - это сила. Как тебе спалось?", reply_markup=keyboard)
     users[str(user_id)]["state"] = "INPUT_SLEEP"
 
+
+@dp.message_handler(filters.Text(contains="Занимался спортом"))
+async def sport(message: types.Message):
+    user_id = message.from_user.id
+    user = users.get(str(user_id))
+    if user == None:
+        state = "FINISH"
+    else:
+        state = user['state']
+    if state != "INPUT_WHATDO":
+        await message.reply("Неверный ввод")
+        return
+    diary[str(user_id)][user["date"]]["Чем занимался - "] = message.text
+    keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
+    keyboard.add(*sleep)
+    await message.reply("Укреплять организм очень важно. Как тебе спалось?", reply_markup=keyboard)
+    users[str(user_id)]["state"] = "INPUT_SLEEP"
 #\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 @dp.message_handler(filters.Text(contains="Хороший сон"))
 async def good_sleep(message: types.Message):
@@ -290,7 +307,7 @@ async def dont_know(message: types.Message):
     await message.reply("Не расстраивайся! Какая сегодня была погодка?", reply_markup=keyboard)
     users[str(user_id)]["state"] = "INPUT_WEATHER"
 
-
+#////////////////////////////////////////////////////////////////////////////////////////////////////////////
 @dp.message_handler(filters.Text(contains="Солнечная"))
 async def sunny(message: types.Message):
     user_id = message.from_user.id
@@ -370,7 +387,7 @@ async def normal_weather(message: types.Message):
     await message.reply("Это хорошо. Какая прошел твой день?", reply_markup=types.ReplyKeyboardRemove())
     users[str(user_id)]["state"] = "INPUT_DAY_DESCR"
 
-
+#//////////////////////////////////////////////////////////////////////////////////////////////////////////
 @dp.message_handler(filters.Text(contains="весь"))
 async def print_diary(message: types.Message):
     user_id = message.from_user.id
